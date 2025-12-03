@@ -1,3 +1,36 @@
+// Create table
+DROP TABLE IF EXISTS nyc_crashes_raw;
+CREATE EXTERNAL TABLE IF NOT EXISTS nyc_crashes_raw (
+  crash_date string,
+  crash_time string,
+  borough string,
+  zip_code string,
+  latitude double,
+  longitude double,
+  location string,
+  on_street_name string,
+  cross_street_name string,
+  off_street_name string,
+  number_of_persons_injured int,
+  number_of_persons_killed int,
+  number_of_pedestrians_injured int,
+  number_of_pedestrians_killed int,
+  number_of_cyclist_injured int,
+  number_of_cyclist_killed int,
+  number_of_motorist_injured int,
+  number_of_motorist_killed int,
+  contributing_factor_vehicle_1 string,
+  contributing_factor_vehicle_2 string,
+  contributing_factor_vehicle_3 string,
+  contributing_factor_vehicle_4 string,
+  contributing_factor_vehicle_5 string,
+  collision_id int
+ )
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ","
+LOCATION "/user/surenda/nyc_crashes/"
+TBLPROPERTIES ('skip.header.line.count'='1');
+
 // Create table in beeline
 CREATE TABLE crashes_by_borough AS​
 SELECT​
