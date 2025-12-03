@@ -1,0 +1,11 @@
+// Create table in beeline
+CREATE TABLE crashes_by_borough AS​
+SELECT​
+  COALESCE(borough, 'UNKNOWN') AS borough,​
+  COUNT(*) AS crash_count​
+FROM nyc_crashes_raw​
+GROUP BY COALESCE(borough, 'UNKNOWN')​
+ORDER BY crash_count DESC;
+
+// Display Table
+SELECT * FROM crashes_by_borough ORDER BY crash_count DESC;
