@@ -1,0 +1,48 @@
+DROP TABLE IF EXISTS motor_vehicle_collisions;
+CREATE EXTERNAL TABLE IF NOT EXISTS motor_vehicle_collisions (
+  crash_date string,
+  crash_time string,
+  borough string,
+  zip_code string,
+  latitude double,
+  longitude double,
+  location string,
+  on_street_name string,
+  cross_street_name string,
+  off_street_name string,
+  number_of_persons_injured int,
+  number_of_persons_killed int,
+  number_of_pedestrians_injured int,
+  number_of_pedestrians_killed int,
+  number_of_cyclist_injured int,
+  number_of_cyclist_killed int,
+  number_of_motorist_injured int,
+  number_of_motorist_killed int,
+  contributing_factor_vehicle_1 string,
+  contributing_factor_vehicle_2 string,
+  contributing_factor_vehicle_3 string,
+  contributing_factor_vehicle_4 string,
+  contributing_factor_vehicle_5 string,
+  collision_id int
+ )
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ","
+LOCATION "/user/czaval21/motor_vehicle_collisions/"
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+SQL queries
+//Top 5 contributing factors causing injuries
+SELECT contributing_factor_vehicle_1 AS factor,SUM(number_of_persons_injured) AS total_injuries
+FROM motor_vehicle_collisions
+WHERE contributing_factor_vehicle_1 IS NOT NULL
+GROUP BY contributing_factor_vehicle_1
+ORDER BY total_injuries DESC
+LIMIT 5;
+
+//Top 10 zip codes with the most collisions
+SELECT zip_code, COUNT(*) AS number_of_collisions
+FROM motor_vehicle_collisions
+WHERE zip_code IS NOT NULL
+GROUP BY zip_code
+ORDER BY number_of_collisions DESC
+LIMIT 10;
